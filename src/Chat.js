@@ -30,7 +30,7 @@ export default function Chat({userName}) {
 
   const sendMessage = async(e) => {
     e.preventDefault();
-    if(input ==""){
+    if(input ===""){
       return alert("Please enter your message");
     }{
     try{
@@ -77,7 +77,7 @@ export default function Chat({userName}) {
     {/* ------------------ Chat Body ------------- */}
     <div className="chatBody">
       {messages.map((message)=> (
-        <p className={`chatMessage ${message.name == userName && "chatReceiver"}`}>
+        <p className={`chatMessage ${message.name === userName && "chatReceiver"}`}>
         <span className="chatName">{message.name}</span>
          {message.message}
         <span className="timestamp">
