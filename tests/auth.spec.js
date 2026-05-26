@@ -19,11 +19,11 @@ test.describe('Authentication', () => {
   });
 
 test('user can log in with valid credentials', async ({ page }) => {
+  await page.goto(`${BASE_URL}/login`); // go directly to login page
   await page.locator('#email').fill(VALID_EMAIL);
   await page.locator('#password').fill(VALID_PASSWORD);
   await page.locator('#submit-btn').click();
 
-  // Wait for chat UI to appear after login
   await expect(page.locator('[data-testid="chat-ui"]')).toBeVisible({ timeout: 15000 });
 });
 
