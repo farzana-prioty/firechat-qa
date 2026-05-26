@@ -24,7 +24,7 @@ export default function App() {
 
       ):(
 
-      <div className="appBody">
+      <div className="appBody" data-testid="chat-ui">
      <Sidebar userName ={userName}/>
      <Routes>
       <Route path="/" element={<Chat userName={userName}/>}> </Route>
