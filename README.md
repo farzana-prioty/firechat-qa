@@ -1,70 +1,128 @@
-# Getting Started with Create React App
+# firechat-qa 💬
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Tests](https://img.shields.io/badge/tests-33%20passing-brightgreen)
+![Browsers](https://img.shields.io/badge/browsers-chromium%20%7C%20firefox%20%7C%20webkit-blue)
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)
+![Firebase](https://img.shields.io/badge/Firebase-Firestore-FFCA28?logo=firebase)
+![Deployed](https://img.shields.io/badge/deployed-Netlify-00C7B7?logo=netlify)
 
-## Available Scripts
+A real-time chat application built with React and Firebase, featuring live messaging, authentication, and presence tracking.
 
-In the project directory, you can run:
+🔗 **[Live Demo](https://firechat-qa.netlify.app)**
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Screenshots
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<!-- Add a screenshot or GIF here once you have one -->
+<!-- ![App screenshot](./docs/screenshot.png) -->
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Features
 
-### `npm run build`
+- 🔐 Email/password authentication (sign up, log in, log out)
+- 💬 Real-time messaging powered by Firestore
+- 🟢 Online/offline presence — last seen timestamp updates live
+- 📋 Last message preview in chat list
+- ⚡ Instant UI updates via React Context API
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Tech stack
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Layer        | Technology                              |
+| ------------ | --------------------------------------- |
+| Frontend     | React 18, React Router DOM, Context API |
+| Backend / DB | Firebase (Firestore, Authentication)    |
+| Testing      | Playwright (E2E, cross-browser)         |
+| Hosting      | Netlify                                 |
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Testing
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This project includes **33 end-to-end tests** written with [Playwright](https://playwright.dev/), running across Chromium, Firefox, and WebKit.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**Test coverage:**
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Register page loads correctly
+- Register fails with empty fields
+- Login page navigation via Sign In link
+- Login page loads with correct fields
+- Login succeeds with valid credentials
+- Login fails with wrong password
+- Login fails with empty email
+- Login fails with empty password
 
-## Learn More
+**Run tests locally:**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+npx playwright test
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Run with UI report:**
 
-### Code Splitting
+```bash
+npx playwright test --reporter=html
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## Getting started locally
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+git clone https://github.com/farzana-prioty/firechat-qa.git
+cd firechat-qa
+npm install
+```
 
-### Making a Progressive Web App
+Create a `.env` file in the root with your Firebase config:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```
+REACT_APP_API_KEY=your_key
+REACT_APP_AUTH_DOMAIN=your_project.firebaseapp.com
+REACT_APP_PROJECT_ID=your_project_id
+REACT_APP_STORAGE_BUCKET=your_project.appspot.com
+REACT_APP_MESSAGING_SENDER_ID=your_sender_id
+REACT_APP_APP_ID=your_app_id
+```
 
-### Advanced Configuration
+Then run:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+npm start
+```
 
-### Deployment
+App runs at `http://localhost:3000`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## Project structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+src/
+├── components/       # Reusable UI components
+├── context/          # React Context for global state
+├── firebase/         # Firebase config and helpers
+├── pages/            # Route-level page components
+└── App.js
+tests/
+└── auth.spec.js      # Playwright E2E test suite
+```
+
+---
+
+## Roadmap
+
+- [ ] Bug report documentation
+- [ ] GitHub Actions CI pipeline
+- [ ] Image/file sharing in chat
+- [ ] Group chats
+- [ ] Message read receipts
+
+---
+
+## Author
+
+**Farzana Prioty** — [GitHub](https://github.com/farzana-prioty)
