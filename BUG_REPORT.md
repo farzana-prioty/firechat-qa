@@ -6,16 +6,17 @@ This document tracks bugs discovered during manual and automated testing of the 
 
 ## Bug Summary
 
-| ID | Title | Severity | Status |
-|---|---|---|---|
-| BUG-001 | No error message shown on invalid login | High | Open |
-| BUG-002 | No error message shown on invalid signup | High | Open |
-| BUG-003 | Weak password accepted during signup | Medium | Open |
-| BUG-004 | Last seen shows "online" after tab is closed | Medium | Open |
-| BUG-005 | Username displays as first 4 characters of email only | Low | Open |
-| BUG-006 | No loading state shown during login/signup | Low | Open |
-| BUG-007 | Page title was "WhatsApp" instead of app name | Low | Fixed |
-| BUG-008 | Direct URL navigation to /login returned 404 on Netlify | High | Fixed |
+| ID      | Title                                                   | Severity | Status |
+| ------- | ------------------------------------------------------- | -------- | ------ |
+| BUG-001 | No error message shown on invalid login                 | High     | Fixed  |
+| BUG-002 | No error message shown on invalid signup                | High     | Fixed  |
+| BUG-003 | Weak password accepted during signup                    | Medium   | Open   |
+| BUG-004 | Last seen shows "online" after tab is closed            | Medium   | Open   |
+| BUG-005 | Username displays as first 4 characters of email only   | Low      | Fixed  |
+| BUG-006 | No loading state shown during login/signup              | Low      | Open   |
+| BUG-007 | Page title was "WhatsApp" instead of app name           | Low      | Fixed  |
+| BUG-008 | Direct URL navigation to /login returned 404 on Netlify | High     | Fixed  |
+| BUG-009 | No show/hide password toggle on login/signup forms      | Low      | Fixed  |
 
 ---
 
@@ -23,13 +24,14 @@ This document tracks bugs discovered during manual and automated testing of the 
 
 ---
 
-### BUG-001 — No error message shown on invalid login
+### BUG-001 — No error message shown on invalid login ✅ FIXED
 
 **Date found:** 2026-05-26
 **Found by:** Manual testing + Playwright E2E test
 **Component:** `Login.js`
 
 **Steps to reproduce:**
+
 1. Navigate to `https://firechat-qa.netlify.app/login`
 2. Enter a valid email with an incorrect password
 3. Click Sign In
@@ -42,27 +44,19 @@ This document tracks bugs discovered during manual and automated testing of the 
 
 **Root cause:** `errorMessage` is stored in a variable inside `.catch()` but never set to state or rendered in JSX.
 
-**Suggested fix:**
-```js
-const [error, setError] = useState("");
-
-.catch((error) => {
-  setError("Invalid email or password. Please try again.");
-});
-
-// In JSX:
-{error && <p className="error-msg">{error}</p>}
-```
+**Fix applied:** Added `error` state with `useState`, called `setError()` inside `.catch()`, and rendered the message in JSX.
+**Status:** ✅ Fixed
 
 ---
 
-### BUG-002 — No error message shown on invalid signup
+### BUG-002 — No error message shown on invalid signup ✅ FIXED
 
 **Date found:** 2026-05-26
 **Found by:** Manual testing
 **Component:** `Register.js`
 
 **Steps to reproduce:**
+
 1. Navigate to `https://firechat-qa.netlify.app`
 2. Enter an already-registered email address
 3. Enter any password and click Sign Up
@@ -75,6 +69,9 @@ const [error, setError] = useState("");
 
 **Root cause:** Same as BUG-001 — error caught but not displayed.
 
+**Fix applied:** Same fix as BUG-001 applied to `Register.js`.
+**Status:** ✅ Fixed
+
 ---
 
 ### BUG-003 — Weak password accepted during signup
@@ -84,6 +81,7 @@ const [error, setError] = useState("");
 **Component:** `Register.js`
 
 **Steps to reproduce:**
+
 1. Navigate to `https://firechat-qa.netlify.app`
 2. Enter a valid email
 3. Enter a 1-character password (e.g. "a")
@@ -96,12 +94,15 @@ const [error, setError] = useState("");
 **Severity:** Medium — security concern and poor UX
 
 **Suggested fix:** Add client-side validation before calling Firebase:
+
 ```js
 if (password.length < 6) {
   setError("Password must be at least 6 characters.");
   return;
 }
 ```
+
+**Status:** Open
 
 ---
 
@@ -112,6 +113,7 @@ if (password.length < 6) {
 **Component:** Firestore presence logic
 
 **Steps to reproduce:**
+
 1. Log in as User A
 2. Log in as User B in another browser
 3. User A observes User B's status as "online"
@@ -125,20 +127,27 @@ if (password.length < 6) {
 **Severity:** Medium — core feature behaves incorrectly on abrupt disconnection
 
 **Suggested fix:** Use Firebase `onDisconnect()` to set offline status automatically:
+
 ```js
 const userStatusRef = ref(realtimeDb, `/status/${userId}`);
-onDisconnect(userStatusRef).set({ state: 'offline', last_changed: serverTimestamp() });
+onDisconnect(userStatusRef).set({
+  state: "offline",
+  last_changed: serverTimestamp(),
+});
 ```
+
+**Status:** Open
 
 ---
 
-### BUG-005 — Username displays as first 4 characters of email only
+### BUG-005 — Username displays as first 4 characters of email only ✅ FIXED
 
 **Date found:** 2026-05-26
 **Found by:** Code review
 **Component:** `Login.js`, `Register.js`
 
 **Steps to reproduce:**
+
 1. Sign up or log in with `farzana@gmail.com`
 2. Observe the displayed username in the chat UI
 
@@ -149,14 +158,18 @@ onDisconnect(userStatusRef).set({ state: 'offline', last_changed: serverTimestam
 **Severity:** Low — cosmetic but looks unpolished
 
 **Root cause:**
+
 ```js
 setuserName(email.substring(0, [4])); // [4] coerces to 4, not intentional
 ```
 
-**Suggested fix:**
+**Fix applied:**
+
 ```js
-setuserName(email.split('@')[0]); // use full prefix before @
+setuserName(email.split("@")[0]); // use full prefix before @
 ```
+
+**Status:** ✅ Fixed
 
 ---
 
@@ -167,6 +180,7 @@ setuserName(email.split('@')[0]); // use full prefix before @
 **Component:** `Login.js`, `Register.js`
 
 **Steps to reproduce:**
+
 1. Click Sign In or Sign Up
 2. Observe the button during the Firebase authentication call
 
@@ -177,6 +191,7 @@ setuserName(email.split('@')[0]); // use full prefix before @
 **Severity:** Low — UX issue, potential for duplicate requests
 
 **Suggested fix:**
+
 ```js
 const [loading, setLoading] = useState(false);
 
@@ -190,8 +205,10 @@ const signIn = async () => {
 };
 
 // In JSX:
-<button disabled={loading}>{loading ? "Signing in..." : "Sign In"}</button>
+<button disabled={loading}>{loading ? "Signing in..." : "Sign In"}</button>;
 ```
+
+**Status:** Open
 
 ---
 
@@ -202,6 +219,7 @@ const signIn = async () => {
 **Component:** `public/index.html`
 
 **Steps to reproduce:**
+
 1. Open the app in any browser
 2. Observe the browser tab title
 
@@ -224,6 +242,7 @@ const signIn = async () => {
 **Component:** `netlify.toml`, Netlify routing config
 
 **Steps to reproduce:**
+
 1. Navigate directly to `https://firechat-qa.netlify.app/login` in browser
 
 **Expected result:** Login page loads correctly
@@ -235,12 +254,37 @@ const signIn = async () => {
 **Root cause:** Single Page Apps require a catch-all redirect rule on Netlify. Without it, Netlify tries to find a physical file at `/login` which doesn't exist.
 
 **Fix applied:** Added `[[redirects]]` rule to `netlify.toml`:
+
 ```toml
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 ```
+
+**Status:** ✅ Fixed
+
+---
+
+### BUG-009 — No show/hide password toggle on login/signup forms ✅ FIXED
+
+**Date found:** 2026-06-02
+**Found by:** UX review
+**Component:** `Login.js`, `Register.js`, `login.css`
+
+**Steps to reproduce:**
+
+1. Navigate to the login or signup page
+2. Type a password
+3. Observe no way to verify what was typed
+
+**Expected result:** An eye icon inside the password field that toggles visibility on click
+
+**Actual result:** Password field had no toggle — users could not verify their input before submitting
+
+**Severity:** Low — UX improvement
+
+**Fix applied:** Added `showPassword` state and `FaEye`/`FaEyeSlash` icons from `react-icons/fa`. Password input type toggles between `"password"` and `"text"` on click. Styled with `.password-wrapper` and `.toggle-password` CSS classes.
 **Status:** ✅ Fixed
 
 ---
@@ -250,4 +294,3 @@ const signIn = async () => {
 - BUG-001 and BUG-002 were discovered during Playwright E2E test development — the silent failure made it impossible to assert on error state, which led to investigating the root cause
 - BUG-004 is a known limitation of Firestore's connection-based presence detection; proper fix requires Firebase Realtime Database `onDisconnect()` handler
 - BUG-008 was directly responsible for 3 Playwright test failures across all browsers before being fixed
-
