@@ -3,24 +3,26 @@ import './login.css';
 import{ auth } from "./firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { LoginContext } from './LoginContext';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Login() {
   const {setUserLogin, setuserName}= useContext(LoginContext)
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const signIn = ()=>{
    signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     // Signed in 
     const user = userCredential.user;
-    setuserName( email.substring(0,[4]));
+    setuserName(email.split('@')[0]);
     setUserLogin(true)
     // ...
   })
   .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
+    setError("Invalid email or password. Please try again.");
   });
 
   };
@@ -35,11 +37,23 @@ export default function Login() {
           />
         </div>
         <div>
-          <label htmlFor="password">Password</label>
-          <input type="password" name='password' id='password' placeholder='Enter your password' value={password}
-          onChange={(e)=>{setpassword(e.target.value)}} />
-        </div>
-       <button id='submit-btn' onClick={signIn}>
+  <label htmlFor="password">Password</label>
+  <div className="password-wrapper">
+    <input 
+      type={showPassword ? "text" : "password"} 
+      name='password' 
+      id='password' 
+      placeholder='Enter your password' 
+      value={password}
+      onChange={(e)=>{setpassword(e.target.value)}}
+    />
+    <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
+  {showPassword ? <FaEyeSlash /> : <FaEye />}
+</span>
+  </div>
+</div>
+       {error && <p className="error-msg">{error}</p>} 
+        <button id='submit-btn' onClick={signIn}>
           Sign In
         </button>
       </div>

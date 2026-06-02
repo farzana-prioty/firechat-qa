@@ -23,7 +23,7 @@ label {
 }
 
 input {
-    width: 95%;
+    width: 96.5%;
     padding: 8px 5px;
     border-radius: 5px;
     margin-bottom: 10px;
@@ -51,4 +51,32 @@ p {
 a {
     text-decoration: none;
     font-weight: bolder;
+}
+
+.error-msg {
+  color: rgb(182, 233, 73);
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 35px;
+    margin-bottom: 10px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 16px;
+    color: #555;
 }
