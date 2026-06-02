@@ -122,7 +122,7 @@ tests/
 
 ## Roadmap
 
-- [ ] Bug report documentation
+- [x] Bug report documentation
 - [ ] GitHub Actions CI pipeline
 - [ ] Image/file sharing in chat
 - [ ] Group chats
