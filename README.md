@@ -14,10 +14,17 @@ A real-time chat application built with React and Firebase, featuring live messa
 
 ## Screenshots
 
-<!-- Add a screenshot or GIF here once you have one -->
-<!-- ![App screenshot](./docs/screenshot.png) -->
+### Sign Up
 
----
+![Sign Up Flow](./docs/signup.gif)
+
+### Sign In
+
+![Sign In Flow](./docs/signin.gif)
+
+### Real-time Updates
+
+![Real-time](./docs/realtime.gif)
 
 ## Features
 
