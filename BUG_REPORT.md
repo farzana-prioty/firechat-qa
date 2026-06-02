@@ -24,7 +24,7 @@ This document tracks bugs discovered during manual and automated testing of the 
 
 ---
 
-### BUG-001 — No error message shown on invalid login ✅ FIXED
+### BUG-001 — No error message shown on invalid login [FIXED]
 
 **Date found:** 2026-05-26
 **Found by:** Manual testing + Playwright E2E test
@@ -49,7 +49,7 @@ This document tracks bugs discovered during manual and automated testing of the 
 
 ---
 
-### BUG-002 — No error message shown on invalid signup ✅ FIXED
+### BUG-002 — No error message shown on invalid signup [FIXED]
 
 **Date found:** 2026-05-26
 **Found by:** Manual testing
@@ -140,7 +140,7 @@ onDisconnect(userStatusRef).set({
 
 ---
 
-### BUG-005 — Username displays as first 4 characters of email only ✅ FIXED
+### BUG-005 — Username displays as first 4 characters of email only [FIXED]
 
 **Date found:** 2026-05-26
 **Found by:** Code review
@@ -212,7 +212,7 @@ const signIn = async () => {
 
 ---
 
-### BUG-007 — Page title displayed "WhatsApp" instead of app name ✅ FIXED
+### BUG-007 — Page title displayed "WhatsApp" instead of app name [FIXED]
 
 **Date found:** 2026-05-26
 **Found by:** Code review
@@ -235,7 +235,7 @@ const signIn = async () => {
 
 ---
 
-### BUG-008 — Direct URL navigation to /login returned 404 on Netlify ✅ FIXED
+### BUG-008 — Direct URL navigation to /login returned 404 on Netlify [FIXED]
 
 **Date found:** 2026-05-26
 **Found by:** Playwright E2E testing
@@ -266,7 +266,7 @@ const signIn = async () => {
 
 ---
 
-### BUG-009 — No show/hide password toggle on login/signup forms ✅ FIXED
+### BUG-009 — No show/hide password toggle on login/signup forms [FIXED]
 
 **Date found:** 2026-06-02
 **Found by:** UX review
