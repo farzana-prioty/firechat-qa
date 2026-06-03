@@ -4,6 +4,17 @@ This document tracks bugs discovered during manual and automated testing of the 
 
 ---
 
+# Note:
+
+These are the bugs I found while building and testing firechat-qa.
+Some I discovered manually, some showed up while writing Playwright
+tests. I fixed 6 of them — left BUG-003, BUG-004 and BUG-006 open
+intentionally since BUG-004 requires a bigger architectural change
+(Firebase Realtime Database onDisconnect) and the others are low
+priority for now.
+
+---
+
 ## Bug Summary
 
 | ID      | Title                                                   | Severity | Status |
@@ -42,7 +53,7 @@ This document tracks bugs discovered during manual and automated testing of the 
 
 **Severity:** High — users have no way of knowing why login failed
 
-**Root cause:** `errorMessage` is stored in a variable inside `.catch()` but never set to state or rendered in JSX.
+**Why it happens:** `errorMessage` is stored in a variable inside `.catch()` but never set to state or rendered in JSX.
 
 **Fix applied:** Added `error` state with `useState`, called `setError()` inside `.catch()`, and rendered the message in JSX.
 **Status:** ✅ Fixed
@@ -67,7 +78,7 @@ This document tracks bugs discovered during manual and automated testing of the 
 
 **Severity:** High — users may attempt signup multiple times thinking it failed silently
 
-**Root cause:** Same as BUG-001 — error caught but not displayed.
+**Why it happens:** Same as BUG-001 — error caught but not displayed.
 
 **Fix applied:** Same fix as BUG-001 applied to `Register.js`.
 **Status:** ✅ Fixed
@@ -93,7 +104,7 @@ This document tracks bugs discovered during manual and automated testing of the 
 
 **Severity:** Medium — security concern and poor UX
 
-**Suggested fix:** Add client-side validation before calling Firebase:
+**What I'd do:** Add client-side validation before calling Firebase:
 
 ```js
 if (password.length < 6) {
@@ -126,7 +137,7 @@ if (password.length < 6) {
 
 **Severity:** Medium — core feature behaves incorrectly on abrupt disconnection
 
-**Suggested fix:** Use Firebase `onDisconnect()` to set offline status automatically:
+**What I'd do:** Use Firebase `onDisconnect()` to set offline status automatically:
 
 ```js
 const userStatusRef = ref(realtimeDb, `/status/${userId}`);
@@ -157,7 +168,7 @@ onDisconnect(userStatusRef).set({
 
 **Severity:** Low — cosmetic but looks unpolished
 
-**Root cause:**
+**Why it happens:**
 
 ```js
 setuserName(email.substring(0, [4])); // [4] coerces to 4, not intentional
@@ -190,7 +201,7 @@ setuserName(email.split("@")[0]); // use full prefix before @
 
 **Severity:** Low — UX issue, potential for duplicate requests
 
-**Suggested fix:**
+**What I'd do:**
 
 ```js
 const [loading, setLoading] = useState(false);
@@ -251,7 +262,7 @@ const signIn = async () => {
 
 **Severity:** High — app completely broken on direct URL access or page refresh
 
-**Root cause:** Single Page Apps require a catch-all redirect rule on Netlify. Without it, Netlify tries to find a physical file at `/login` which doesn't exist.
+**Why it happens:** Single Page Apps require a catch-all redirect rule on Netlify. Without it, Netlify tries to find a physical file at `/login` which doesn't exist.
 
 **Fix applied:** Added `[[redirects]]` rule to `netlify.toml`:
 
